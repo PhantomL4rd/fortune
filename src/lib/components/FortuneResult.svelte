@@ -1,5 +1,6 @@
 <script lang="ts">
 import type { FortuneResult } from '$lib/types';
+import { base } from '$app/paths';
 import ShareButton from './ShareButton.svelte';
 import { Star, Zap, Palette } from 'lucide-svelte';
 
@@ -12,7 +13,7 @@ let { result }: Props = $props();
 
 <div class="card bg-base-200 shadow-xl max-w-md mx-auto">
 	<figure class="px-6 pt-6">
-		<img src={result.card.image} alt={result.card.name} class="rounded-xl w-24 h-auto" />
+		<img src="{base}{result.card.image}" alt={result.card.name} class="rounded-xl w-24 h-auto" />
 	</figure>
 	<div class="card-body items-center text-center">
 		<h2 class="card-title text-2xl">{result.card.name}</h2>

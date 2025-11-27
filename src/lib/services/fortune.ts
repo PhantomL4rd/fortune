@@ -4,6 +4,7 @@ import type {
 	FortunePattern,
 	FortuneResult,
 } from '$lib/types';
+import { base } from '$app/paths';
 import { CARDS } from '$lib/data/cards';
 import { fetchDyes, getRandomDye } from './dyes';
 
@@ -14,7 +15,7 @@ export async function fetchFortuneData(): Promise<FortuneData> {
 		return cachedFortuneData;
 	}
 
-	const response = await fetch('/data/fortune.json');
+	const response = await fetch(`${base}/data/fortune.json`);
 	if (!response.ok) {
 		throw new Error('Failed to fetch fortune data');
 	}
