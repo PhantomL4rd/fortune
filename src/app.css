@@ -1,0 +1,16 @@
+@import 'tailwindcss';
+@plugin 'daisyui';
+
+@theme {
+	--color-primary: #6366f1;
+	--color-secondary: #a855f7;
+	--color-accent: #f59e0b;
+}
+
+html {
+	@apply scroll-smooth;
+}
+
+body {
+	@apply min-h-screen;
+}

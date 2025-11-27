@@ -1,0 +1,37 @@
+name: Generate Daily Fortune
+
+on:
+  schedule:
+    - cron: '0 15 * * *'  # JST 0:00
+  workflow_dispatch:
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - run: npm ci
+
+      - run: npm install @google/generative-ai
+
+      - name: Generate fortune data
+        run: node scripts/generate-fortune.js
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+
+      - name: Commit and push
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'chore: update daily fortune'
+          file_pattern: static/data/fortune.json
+          push_options: '--force'
+          commit_options: '--amend --no-edit'
