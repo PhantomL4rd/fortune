@@ -45,7 +45,11 @@ async function handleDraw() {
 	{:else if result}
 		<FortuneResult {result} />
 
-		{#if !canDraw}
+		{#if canDraw}
+			<div class="text-center mt-8">
+				<DrawButton disabled={loading} {loading} onclick={handleDraw} />
+			</div>
+		{:else}
 			<p class="text-center text-base-content/50 mt-6 text-sm">
 				明日またカードを引きに来てください
 			</p>
