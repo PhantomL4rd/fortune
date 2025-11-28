@@ -1,24 +1,7 @@
 import type { FortuneResult, StoredData } from '$lib/types';
+import { getJSTDateString } from '$lib/utils/date';
 
 const STORAGE_KEY = 'sharlayan-fortune';
-
-function getJSTDateString(): string {
-	const now = new Date();
-	const jstOffset = 9 * 60;
-	const utcMinutes = now.getUTCHours() * 60 + now.getUTCMinutes();
-	const jstMinutes = utcMinutes + jstOffset;
-
-	const jstDate = new Date(now);
-	if (jstMinutes >= 24 * 60) {
-		jstDate.setUTCDate(jstDate.getUTCDate() + 1);
-	}
-
-	const year = jstDate.getUTCFullYear();
-	const month = String(jstDate.getUTCMonth() + 1).padStart(2, '0');
-	const day = String(jstDate.getUTCDate()).padStart(2, '0');
-
-	return `${year}-${month}-${day}`;
-}
 
 function isLocalStorageAvailable(): boolean {
 	try {
