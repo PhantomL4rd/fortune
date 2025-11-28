@@ -23,7 +23,7 @@ const CARDS = [
 	{ id: 'ewer', name: 'サリャクの水瓶', attributes: ['水', '河川', '知力'] },
 ];
 
-const PATTERNS_PER_CARD = 10;
+const PATTERNS_PER_CARD = 3;
 
 async function generateFortuneForCard(genAI, card) {
 	const model = genAI.getGenerativeModel({
