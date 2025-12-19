@@ -21,7 +21,7 @@ import { Moon, Sparkles, Menu, Palette } from 'lucide-svelte';
 				>
 					<li>
 						<a
-							href="https://phantoml4rd.github.io/ffxiv-colorant-picker/"
+							href="https://colorant-picker.pl4rd.com/"
 							target="_blank"
 							rel="noopener noreferrer"
 							class="flex items-center gap-2"

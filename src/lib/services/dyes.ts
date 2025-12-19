@@ -1,7 +1,6 @@
 import type { Dye } from '$lib/types';
 
-const DYES_API_URL =
-	'https://phantoml4rd.github.io/ffxiv-colorant-picker/data/dyes.json';
+const DYES_API_URL = 'https://colorant-picker.pl4rd.com/data/dyes.json';
 
 interface RawDye {
 	id: string;
