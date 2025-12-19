@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Moon, Sparkles, Menu, Palette } from 'lucide-svelte';
+import { Moon, Menu, SwatchBook } from 'lucide-svelte';
 </script>
 
 <header class="navbar bg-primary text-primary-content mb-8">
@@ -26,7 +26,7 @@ import { Moon, Sparkles, Menu, Palette } from 'lucide-svelte';
 							rel="noopener noreferrer"
 							class="flex items-center gap-2"
 						>
-							<Palette class="w-5 h-5" />
+							<SwatchBook class="w-5 h-5" />
 							カララントピッカー
 						</a>
 					</li>
