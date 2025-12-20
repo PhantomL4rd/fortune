@@ -1,6 +1,6 @@
 <script lang="ts">
 import type { FortuneResult } from '$lib/types';
-import { generateShareText, copyToClipboard } from '$lib/services/share';
+import { copyToClipboard } from '$lib/services/share';
 import { Share2, Check } from 'lucide-svelte';
 
 interface Props {
@@ -11,8 +11,7 @@ let { result }: Props = $props();
 let copied = $state(false);
 
 async function handleShare() {
-	const siteUrl = window.location.href;
-	const text = generateShareText(result, siteUrl);
+	const text = result.toShareText(window.location.href);
 	const success = await copyToClipboard(text);
 
 	if (success) {

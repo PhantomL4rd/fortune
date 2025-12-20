@@ -1,6 +1,6 @@
 <script lang="ts">
 import { onMount } from 'svelte';
-import type { FortuneResult as FortuneResultType } from '$lib/types';
+import { FortuneResult as FortuneResultType } from '$lib/types';
 import { drawFortune } from '$lib/services/fortune';
 import { canDrawToday, loadResult, saveResult } from '$lib/services/storage';
 import FortuneResult from '$lib/components/FortuneResult.svelte';

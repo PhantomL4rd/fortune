@@ -46,7 +46,7 @@ let { result }: Props = $props();
 					<div class="flex items-center justify-center gap-3">
 						<div
 							class="w-8 h-8 rounded-full border-2 border-base-content/20"
-							style="background-color: rgb({result.luckyDye.rgb.r}, {result.luckyDye.rgb.g}, {result.luckyDye.rgb.b});"
+							style="background-color: {result.luckyDye.hex};"
 						></div>
 						<span class="text-base-content/80">{result.luckyDye.name}</span>
 					</div>

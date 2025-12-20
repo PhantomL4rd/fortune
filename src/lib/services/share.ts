@@ -1,17 +1,3 @@
-import type { FortuneResult } from '$lib/types';
-
-export function generateShareText(
-	result: FortuneResult,
-	siteUrl: string,
-): string {
-	const action =
-		result.pattern.action.length > 50
-			? result.pattern.action.slice(0, 47) + '...'
-			: result.pattern.action;
-
-	return `今日のカード: ${result.card.name}　開運アクション: ${action} ${siteUrl}`;
-}
-
 export async function copyToClipboard(text: string): Promise<boolean> {
 	try {
 		if (navigator.clipboard && navigator.clipboard.writeText) {

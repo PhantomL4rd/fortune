@@ -1,84 +1,71 @@
-import type { FortuneResult, StoredData } from '$lib/types';
+import { FortuneResult, type StoredData } from '$lib/types';
 import { getJSTDateString } from '$lib/utils/date';
 
 const STORAGE_KEY = 'sharlayan-fortune';
 
-function isLocalStorageAvailable(): boolean {
-	try {
-		const testKey = '__test__';
-		localStorage.setItem(testKey, testKey);
-		localStorage.removeItem(testKey);
-		return true;
-	} catch {
-		return false;
+class Storage {
+	private memoryFallback: StoredData | null = null;
+
+	private isAvailable(): boolean {
+		try {
+			const testKey = '__test__';
+			localStorage.setItem(testKey, testKey);
+			localStorage.removeItem(testKey);
+			return true;
+		} catch {
+			return false;
+		}
 	}
-}
 
-let memoryStorage: StoredData | null = null;
-
-export function saveResult(result: FortuneResult): void {
-	const data: StoredData = {
-		lastDrawnDate: getJSTDateString(),
-		result,
-	};
-
-	if (isLocalStorageAvailable()) {
-		localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-	} else {
-		memoryStorage = data;
+	save(data: StoredData): void {
+		if (this.isAvailable()) {
+			localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+		} else {
+			this.memoryFallback = data;
+		}
 	}
-}
 
-export function loadResult(): FortuneResult | null {
-	let data: StoredData | null = null;
-
-	if (isLocalStorageAvailable()) {
-		const stored = localStorage.getItem(STORAGE_KEY);
-		if (stored) {
+	load(): StoredData | null {
+		if (this.isAvailable()) {
+			const stored = localStorage.getItem(STORAGE_KEY);
+			if (!stored) return null;
 			try {
-				data = JSON.parse(stored);
+				return JSON.parse(stored);
 			} catch {
 				return null;
 			}
 		}
-	} else {
-		data = memoryStorage;
+		return this.memoryFallback;
 	}
 
-	if (!data) {
-		return null;
+	clear(): void {
+		if (this.isAvailable()) {
+			localStorage.removeItem(STORAGE_KEY);
+		}
+		this.memoryFallback = null;
 	}
+}
 
-	return data.result;
+const storage = new Storage();
+
+export function saveResult(result: FortuneResult): void {
+	storage.save({
+		lastDrawnDate: getJSTDateString(),
+		result,
+	});
+}
+
+export function loadResult(): FortuneResult | null {
+	const data = storage.load();
+	return data ? FortuneResult.fromJSON(data.result) : null;
 }
 
 export function canDrawToday(): boolean {
-	let data: StoredData | null = null;
-
-	if (isLocalStorageAvailable()) {
-		const stored = localStorage.getItem(STORAGE_KEY);
-		if (stored) {
-			try {
-				data = JSON.parse(stored);
-			} catch {
-				return true;
-			}
-		}
-	} else {
-		data = memoryStorage;
-	}
-
-	if (!data) {
-		return true;
-	}
-
-	const today = getJSTDateString();
-	return data.lastDrawnDate !== today;
+	const data = storage.load();
+	if (!data) return true;
+	return data.lastDrawnDate !== getJSTDateString();
 }
 
 export function clearStorage(): void {
-	if (isLocalStorageAvailable()) {
-		localStorage.removeItem(STORAGE_KEY);
-	}
-	memoryStorage = null;
+	storage.clear();
 }

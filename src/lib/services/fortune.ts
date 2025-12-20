@@ -1,41 +1,19 @@
-import type {
-	Card,
-	FortuneData,
-	FortunePattern,
-	FortuneResult,
-} from '$lib/types';
+import { FortuneResult, type FortuneData } from '$lib/types';
 import { base } from '$app/paths';
 import { CARDS } from '$lib/data/cards';
-import { fetchDyes, getRandomDye } from './dyes';
+import { fetchDyes } from './dyes';
 
-let cachedFortuneData: FortuneData | null = null;
-
-export async function fetchFortuneData(): Promise<FortuneData> {
-	if (cachedFortuneData) {
-		return cachedFortuneData;
-	}
-
+async function fetchFortuneData(): Promise<FortuneData> {
 	const response = await fetch(`${base}/data/fortune.json`);
 	if (!response.ok) {
 		throw new Error('Failed to fetch fortune data');
 	}
-
-	cachedFortuneData = await response.json();
-	return cachedFortuneData!;
+	return response.json();
 }
 
-export function clearFortuneCache(): void {
-	cachedFortuneData = null;
-}
-
-export function getRandomCard(): Card {
-	const index = Math.floor(Math.random() * CARDS.length);
-	return CARDS[index];
-}
-
-export function getRandomPattern(patterns: FortunePattern[]): FortunePattern {
-	const index = Math.floor(Math.random() * patterns.length);
-	return patterns[index];
+function getRandomItem<T>(items: T[]): T {
+	const index = Math.floor(Math.random() * items.length);
+	return items[index];
 }
 
 export async function drawFortune(): Promise<FortuneResult> {
@@ -44,20 +22,15 @@ export async function drawFortune(): Promise<FortuneResult> {
 		fetchDyes(),
 	]);
 
-	const card = getRandomCard();
+	const card = getRandomItem(CARDS);
 	const patterns = fortuneData.cards[card.id] || [];
 
 	if (patterns.length === 0) {
 		throw new Error(`No patterns found for card: ${card.id}`);
 	}
 
-	const pattern = getRandomPattern(patterns);
-	const luckyDye = getRandomDye(dyes);
+	const pattern = getRandomItem(patterns);
+	const luckyDye = dyes.length > 0 ? getRandomItem(dyes) : null;
 
-	return {
-		card,
-		pattern,
-		luckyDye,
-		drawnAt: new Date().toISOString(),
-	};
+	return new FortuneResult(card, pattern, luckyDye, new Date().toISOString());
 }
