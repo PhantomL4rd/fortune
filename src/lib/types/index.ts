@@ -17,10 +17,7 @@ export interface FortuneData {
 }
 
 export interface Dye {
-	id: string;
 	name: string;
-	category: string;
-	hex: string;
 	rgb: { r: number; g: number; b: number };
 }
 

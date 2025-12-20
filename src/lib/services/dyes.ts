@@ -3,10 +3,7 @@ import type { Dye } from '$lib/types';
 const DYES_API_URL = 'https://colorant-picker.pl4rd.com/data/dyes.json';
 
 interface RawDye {
-	id: string;
 	name: string;
-	category: string;
-	hex: string;
 	rgb: { r: number; g: number; b: number };
 }
 
@@ -25,10 +22,7 @@ export async function fetchDyes(): Promise<Dye[]> {
 
 		const data: { dyes: RawDye[] } = await response.json();
 		cachedDyes = data.dyes.map((dye) => ({
-			id: dye.id,
 			name: dye.name,
-			category: dye.category,
-			hex: dye.hex,
 			rgb: dye.rgb,
 		}));
 
